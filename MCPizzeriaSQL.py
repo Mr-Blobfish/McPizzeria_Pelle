@@ -1,7 +1,7 @@
-# Vul hier de naam van je programma in:
+# Vul hier de naam van je programma in: Sky Lander World
 #
 #
-# Vul hier jullie namen in:
+# Vul hier jullie namen in: Pelle (en Jordi)
 #
 #
 #
