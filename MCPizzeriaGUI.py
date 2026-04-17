@@ -23,16 +23,24 @@ venster.wm_title("MC Pizzeria")
 labelIntro = Label(venster, text="Welkom!")
 labelIntro.grid(row=0, column=0, sticky="W")
 
+labelKlantNaam = Label(venster, text="Klant Naam:")
+labelKlantNaam.grid(row=1, column=0)
+
+ingevoerde_klantnaam = StringVar()
+invoerveldKlantnaam = Entry(venster, textvariable=ingevoerde_klantnaam)
+invoerveldKlantnaam.grid(row=1, column=1, sticky="W")
+
+labelKlantNr = Label(venster, text="Klant Nr:")
+labelKlantNr.grid(row=2, column=0)
+
+invoerveldKlantNr = Entry(venster)
+invoerveldKlantNr.grid(row=2, column=1, sticky="W")
+
+
+
+
 sluitKnop = Button(venster, text=('Die'), width= 15, height= 1, command= venster.destroy)
 sluitKnop.grid(row= 17, column= 4)
-
-
-
-
-
-
-
-
 
 #reageert op gebruikersinvoer, deze regel als laatste laten staan
 venster.mainloop()
