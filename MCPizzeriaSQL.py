@@ -62,6 +62,23 @@ def voegKlantToe(naam_nieuwe_klant):
     print("Klant toegevoegd:")
     printTabel("tbl_klanten")
 
+#Zoek alle gegevens over klant met ingevoerde naam
+def zoekKlantInTabel(ingevoerde_klantnaam):
+    cursor.execute("SELECT * FROM tbl_klanten WHERE klantAchternaam = ?", (ingevoerde_klantnaam,))
+    zoek_resultaat = cursor.fetchall()
+    if zoek_resultaat == []: #resultaat is leeg, geen gerecht gevonden
+        print("Geen klant gevonden met achternaam", ingevoerde_klantnaam)
+        print("Klant wordt nu toegevoegd.")
+        cursor.execute("INSERT INTO tbl_klanten VALUES(NULL, ? )", (ingevoerde_klantnaam, ))
+        db.commit() #gegevens in de database zetten
+        print("Klant toegevoegd aan 'tbl_klanten':" + ingevoerde_klantnaam )
+        printTabel("tbl_klanten")
+        #nu dat klant in tabel is gezet, kunnen we zijn gegevens ophalen
+        cursor.execute("SELECT * FROM tbl_klanten WHERE klantAchternaam = ?",(ingevoerde_klantnaam,))
+        zoek_resultaat = cursor.fetchall()
+    return zoek_resultaat
+
+
 
 ### --------- Hoofdprogramma  ---------------
 
