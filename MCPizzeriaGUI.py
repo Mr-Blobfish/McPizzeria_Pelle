@@ -27,16 +27,13 @@ def zoekKlant():
         #toon klantAchternaam, de tweede kolom uit het resultaat in de invoerveld
         invoerveldKlantnaam.insert(END, rij[1]) 
 
-
 def toonMenuInListbox():
     listboxMenu.delete(0, END) #maak de listbox leeg
     listboxMenu.insert(0, "ID Gerecht Prijs")
     pizza_tabel = MCPizzeriaSQL.vraagOpGegevensPizzaTabel()
     for regel in pizza_tabel:
         listboxMenu.insert(END, regel) #voeg elke regel uit resultaat in listboxMenu
-
-### functie voor het selecteren van een rij uit de listbox en deze in een andere veld teplaatsen
-def haalGeselecteerdeRijOp(event):
+def haalGeselecteerdeRijOp(event): # functie voor het selecteren van een rij uit de listbox en deze in een andere veld teplaatsen
     #bepaal op welke regel er geklikt is
     geselecteerdeRegelInLijst = listboxMenu.curselection()[0]
     #haal tekst uit die regel
@@ -45,6 +42,19 @@ def haalGeselecteerdeRijOp(event):
     invoerveldGeselecteerdePizza.delete(0, END)
     #zet tekst in veld
     invoerveldGeselecteerdePizza.insert(0, geselecteerdeTekst[1])
+
+#voeg de bestelling van klant met gekozen pizza en aantal toe
+#in de winkelwagentabel
+#en toon de bestelling in de listbox op het scherm
+def voegToeAanWinkelWagen():
+    klantNr = invoerveldKlantNr.get()
+    gerechtID = ingevoerde_pizza.get()
+    aantal = aantalGekozen.get()
+    MCPizzeriaSQL.voegToeAanWinkelWagen(klantNr, gerechtID, aantal )
+    winkelwagen_tabel = MCPizzeriaSQL.vraagOpGegevensWinkelWagenTabel()
+    listboxWinkelwagen.delete(0, END) #listbox eerst even leeg maken
+    for regel in winkelwagen_tabel:
+        listboxWinkelwagen.insert(END, regel)
 
 ### --------- Hoofdprogramma  ---------------
 venster = Tk()
@@ -86,14 +96,36 @@ listboxMenu.config(yscrollcommand=scrollbarlistbox.set)
 scrollbarlistbox.config(command=listboxMenu.yview)
 
 labelGekozenPizza = Label(venster, text="GekozenPizza")
-labelGekozenPizza.grid(row=13, column=0)
+labelGekozenPizza.grid(row=12, column=0)
 
 ingevoerde_pizza = StringVar()
 invoerveldGeselecteerdePizza = Entry(venster, textvariable=ingevoerde_pizza)
-invoerveldGeselecteerdePizza.grid(row=13, column=1, sticky="W")
+invoerveldGeselecteerdePizza.grid(row=12, column=1, sticky="W")
 
 knopToonPizzas = Button(venster, text="Toon alle pizza’s", width=12, command=toonMenuInListbox)
 knopToonPizzas.grid(row=3, column=4)
+
+# aantal Pizza's
+labelAantal = Label(venster, text="Aantal")
+labelAantal.grid(row=13, column=0)
+
+aantalGekozen = IntVar()
+aantalGekozen.set(1)
+optionMenuPizzaAantal = OptionMenu(venster, aantalGekozen, 1,2,3)
+optionMenuPizzaAantal.grid(row=13, column=1)
+
+
+knopVoegToeAanWinkelWagen = Button(venster, text="Voeg toe", width=12, command=voegToeAanWinkelWagen)
+knopVoegToeAanWinkelWagen.grid(row=13, column=4)
+
+
+listboxWinkelwagen = Listbox(venster, height= 3, width= 30)
+listboxWinkelwagen.grid(row=14, column=1, rowspan=3, columnspan=2, sticky="W")
+
+labelBestelling = Label(venster, text="Bestelling")
+labelBestelling.grid(row=14, column=0)
+
+
 
 
 
