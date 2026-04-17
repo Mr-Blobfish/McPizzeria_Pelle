@@ -28,6 +28,12 @@ def zoekKlant():
         invoerveldKlantnaam.insert(END, rij[1]) 
 
 
+def toonMenuInListbox():
+    listboxMenu.delete(0, END) #maak de listbox leeg
+    pizza_tabel = MCPizzeriaSQL.vraagOpGegevensPizzaTabel()
+    for regel in pizza_tabel:
+        listboxMenu.insert(END, regel) #voeg elke regel uit resultaat in listboxMenu
+
 ### --------- Hoofdprogramma  ---------------
 venster = Tk()
 venster.iconbitmap("MC_icon.ico") #Let op: Dit werkt niet op een MAC! Zet deze regel dan in commentaar
@@ -36,6 +42,7 @@ venster.wm_title("MC Pizzeria")
 labelIntro = Label(venster, text="Welkom!")
 labelIntro.grid(row=0, column=0, sticky="W")
 
+# Klanten GUI
 labelKlantNaam = Label(venster, text="Klant Naam:")
 labelKlantNaam.grid(row=1, column=0)
 
@@ -46,11 +53,19 @@ invoerveldKlantnaam.grid(row=1, column=1, sticky="W")
 klantZoekKnopOpNaam = Button(venster, text="Zoek Klant", command=zoekKlant)
 klantZoekKnopOpNaam.grid(row=1, column=3)
 
+
 labelKlantNr = Label(venster, text="Klant Nr:")
 labelKlantNr.grid(row=2, column=0)
 
 invoerveldKlantNr = Entry(venster)
 invoerveldKlantNr.grid(row=2, column=1, sticky="W")
+
+# Pizza GUI
+listboxMenu = Listbox(venster, height=6, width= 50)
+listboxMenu.grid(row=5, column=1, rowspan=6, columnspan=2, sticky="W")
+
+knopToonPizzas = Button(venster, text="Toon alle pizza’s", width=12, command=toonMenuInListbox)
+knopToonPizzas.grid(row=3, column=4)
 
 
 

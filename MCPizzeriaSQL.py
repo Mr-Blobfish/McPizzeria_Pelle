@@ -36,6 +36,7 @@ def printTabel(tabel_naam):
     opgehaalde_gegevens = cursor.fetchall() #sla gegevens op in een variabele
     print("Tabel " + tabel_naam + ":", opgehaalde_gegevens) #druk gegevens af
 
+
 def voegPizzaToe(naam_nieuwe_pizza, prijs_nieuwe_pizza):
     cursor.execute("INSERT INTO tbl_pizzas VALUES(NULL, ?, ? )", (naam_nieuwe_pizza, prijs_nieuwe_pizza))
     db.commit() #gegevens naar de database wegschrijven
@@ -56,28 +57,34 @@ def pasGerechtAan(gerechtID, nieuweGerechtNaam, nieuwePrijs):
     print("Gerecht aangepast")
     printTabel("tbl_pizzas")
 
+
 def voegKlantToe(naam_nieuwe_klant):
     cursor.execute("INSERT INTO tbl_klanten VALUES(NULL, ?)", (naam_nieuwe_klant,))
     db.commit()
     print("Klant toegevoegd:")
     printTabel("tbl_klanten")
 
-#Zoek alle gegevens over klant met ingevoerde naam
-def zoekKlantInTabel(ingevoerde_klantnaam):
+def zoekKlantInTabel(ingevoerde_klantnaam): #Zoek alle gegevens over klant met ingevoerde naam
     cursor.execute("SELECT * FROM tbl_klanten WHERE klantAchternaam = ?", (ingevoerde_klantnaam,))
     zoek_resultaat = cursor.fetchall()
     if zoek_resultaat == []: #resultaat is leeg, geen gerecht gevonden
         print("Geen klant gevonden met achternaam", ingevoerde_klantnaam)
         print("Klant wordt nu toegevoegd.")
-        cursor.execute("INSERT INTO tbl_klanten VALUES(NULL, ? )", (ingevoerde_klantnaam, ))
+        # cursor.execute("INSERT INTO tbl_klanten VALUES(NULL, ? )", (ingevoerde_klantnaam, ))
+        voegKlantToe((ingevoerde_klantnaam))
         db.commit() #gegevens in de database zetten
-        print("Klant toegevoegd aan 'tbl_klanten':" + ingevoerde_klantnaam )
-        printTabel("tbl_klanten")
         #nu dat klant in tabel is gezet, kunnen we zijn gegevens ophalen
         cursor.execute("SELECT * FROM tbl_klanten WHERE klantAchternaam = ?",(ingevoerde_klantnaam,))
         zoek_resultaat = cursor.fetchall()
     return zoek_resultaat
 
+
+def vraagOpGegevensPizzaTabel():
+ cursor.execute("SELECT * FROM tbl_pizzas")
+ resultaat = cursor.fetchall()
+ print("Tabel tbl_pizzas:", resultaat)
+ 
+ return resultaat
 
 
 ### --------- Hoofdprogramma  ---------------
