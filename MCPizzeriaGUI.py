@@ -16,10 +16,15 @@ import MCPizzeriaSQL
 
 
 ### --------- Hoofdprogramma  ---------------
-
 venster = Tk()
 venster.iconbitmap("MC_icon.ico") #Let op: Dit werkt niet op een MAC! Zet deze regel dan in commentaar
 venster.wm_title("MC Pizzeria")
+
+labelIntro = Label(venster, text="Welkom!")
+labelIntro.grid(row=0, column=0, sticky="W")
+
+sluitKnop = Button(venster, text=('Die'), width= 15, height= 1, command= venster.destroy)
+sluitKnop.grid(row= 17, column= 4)
 
 
 
