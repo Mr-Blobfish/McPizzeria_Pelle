@@ -30,9 +30,21 @@ def zoekKlant():
 
 def toonMenuInListbox():
     listboxMenu.delete(0, END) #maak de listbox leeg
+    listboxMenu.insert(0, "ID Gerecht Prijs")
     pizza_tabel = MCPizzeriaSQL.vraagOpGegevensPizzaTabel()
     for regel in pizza_tabel:
         listboxMenu.insert(END, regel) #voeg elke regel uit resultaat in listboxMenu
+
+### functie voor het selecteren van een rij uit de listbox en deze in een andere veld teplaatsen
+def haalGeselecteerdeRijOp(event):
+    #bepaal op welke regel er geklikt is
+    geselecteerdeRegelInLijst = listboxMenu.curselection()[0]
+    #haal tekst uit die regel
+    geselecteerdeTekst = listboxMenu.get(geselecteerdeRegelInLijst)
+    #verwijder tekst uit veld waar je in wilt schrijven, voor het geval er al iets staat
+    invoerveldGeselecteerdePizza.delete(0, END)
+    #zet tekst in veld
+    invoerveldGeselecteerdePizza.insert(0, geselecteerdeTekst[1])
 
 ### --------- Hoofdprogramma  ---------------
 venster = Tk()
@@ -61,8 +73,24 @@ invoerveldKlantNr = Entry(venster)
 invoerveldKlantNr.grid(row=2, column=1, sticky="W")
 
 # Pizza GUI
+labelPizzas = Label(venster, text="Mogelijkheden")
+labelPizzas.grid(row=5, column=0)
+
 listboxMenu = Listbox(venster, height=6, width= 50)
 listboxMenu.grid(row=5, column=1, rowspan=6, columnspan=2, sticky="W")
+listboxMenu.bind('<<ListboxSelect>>', haalGeselecteerdeRijOp)
+
+scrollbarlistbox = Scrollbar(venster)
+scrollbarlistbox.grid(row=5, column=2, rowspan=6, sticky="E")
+listboxMenu.config(yscrollcommand=scrollbarlistbox.set)
+scrollbarlistbox.config(command=listboxMenu.yview)
+
+labelGekozenPizza = Label(venster, text="GekozenPizza")
+labelGekozenPizza.grid(row=13, column=0)
+
+ingevoerde_pizza = StringVar()
+invoerveldGeselecteerdePizza = Entry(venster, textvariable=ingevoerde_pizza)
+invoerveldGeselecteerdePizza.grid(row=13, column=1, sticky="W")
 
 knopToonPizzas = Button(venster, text="Toon alle pizza’s", width=12, command=toonMenuInListbox)
 knopToonPizzas.grid(row=3, column=4)
